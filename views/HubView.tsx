@@ -148,7 +148,7 @@ const HubView: React.FC<HubViewProps> = ({ onGoHome }) => {
         </div>
         
         <div className="relative z-10 max-w-md mx-auto">
-          <h1 className="text-2xl font-bold mb-2">15–17 岁｜学生公司中期发布会</h1>
+          <h1 className="text-2xl font-bold mb-2">学生公司</h1>
           <p className="text-white/90 text-sm font-medium opacity-90">第一学期成果展示 · 欢迎交流与反馈</p>
         </div>
       </header>

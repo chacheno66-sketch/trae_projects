@@ -64,7 +64,7 @@ const HomeView: React.FC<HomeViewProps> = ({ onEnterHub, onEnterJuniorHub }) => 
             </div>
             
             <div>
-              <h3 className="text-2xl font-bold text-white mb-1">7–12 岁｜小小创变家</h3>
+              <h3 className="text-2xl font-bold text-white mb-1">小小创变家 & 点亮未来</h3>
               <p className="text-white/90 text-sm font-medium">发现改变世界的奇思妙想</p>
             </div>
           </div>
@@ -99,7 +99,7 @@ const HomeView: React.FC<HomeViewProps> = ({ onEnterHub, onEnterJuniorHub }) => 
             </div>
             
             <div>
-              <h3 className="text-2xl font-bold text-white mb-1">15–17 岁｜学生公司</h3>
+              <h3 className="text-2xl font-bold text-white mb-1">学生公司</h3>
               <p className="text-white/90 text-sm font-medium">见证未来企业家的起步</p>
             </div>
           </div>
@@ -169,10 +169,7 @@ const HomeView: React.FC<HomeViewProps> = ({ onEnterHub, onEnterJuniorHub }) => 
               >
                 <div className="pt-3 space-y-3">
                   <p>
-                    青年成就中国(Junior Achievement China，简称JA中国)是一家致力于培养青少年核心素养的公益机构。
-                  </p>
-                  <p>
-                    本次集市汇聚了来自全国各地的优秀学生公司，展示了他们在 JA 《学生公司》课程中的学习成果。在这里，您可以见证青少年如何将商业创意转化为真实的商业项目，感受他们的创新精神与企业家潜能。
+                    青年成就中国(Junior Achievement China，简称JA中国)成立于1993年，是一家致力于培养青少年核心素养的公益机构。自成立以来，青年成就中国积极与政府、教育部门和具有社会责任感的企业开展合作，为中国的大、中、小学生提供体验式、系统化的公益教育项目，以提升学生在职业构建、金融素养、责任创业方面的综合素质。截至目前已影响了中国70多个城市，超过770万青少年。
                   </p>
                 </div>
               </motion.div>

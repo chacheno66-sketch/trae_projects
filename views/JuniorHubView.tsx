@@ -148,8 +148,12 @@ const JuniorHubView: React.FC<JuniorHubViewProps> = ({ onGoHome }) => {
         </div>
         
         <div className="relative z-10 max-w-md mx-auto">
-          <h1 className="text-2xl font-bold mb-2">7–12 岁｜小小创变家</h1>
-          <p className="text-white/90 text-sm font-medium opacity-90">「小小创变家·循环向未来」成果展</p>
+          <h1 className="text-2xl font-bold mb-2">小小创变家 & 点亮未来</h1>
+          <p className="text-white/90 text-sm font-medium opacity-90 leading-relaxed">
+            「小小创变家·循环向未来」成果展
+            <br />
+            点亮未来挑战赛优秀团队
+          </p>
         </div>
       </header>
 
