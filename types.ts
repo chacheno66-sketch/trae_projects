@@ -3,6 +3,7 @@ export type Zone = 'A' | 'B' | 'C' | 'D' | 'E';
 export interface Company {
   id: string;
   name: string;
+  school: string;
   zone: Zone;
   boothNumber: string;
   tag: string;
@@ -14,4 +15,4 @@ export interface Company {
   likes: number;
 }
 
-export type ViewState = 'HOME' | 'HUB' | 'DETAIL';
+export type ViewState = 'HOME' | 'HUB' | 'JUNIOR_HUB' | 'DETAIL';

@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Company, ViewState } from './types';
 import HomeView from './views/HomeView';
 import HubView from './views/HubView';
+import JuniorHubView from './views/JuniorHubView';
 import DetailView from './views/DetailView';
 
 const App: React.FC = () => {
@@ -12,6 +13,10 @@ const App: React.FC = () => {
   // Navigation Handlers
   const handleEnterHub = () => {
     setView('HUB');
+  };
+
+  const handleEnterJuniorHub = () => {
+    setView('JUNIOR_HUB');
   };
 
   const handleSelectCompany = (company: Company) => {
@@ -43,7 +48,20 @@ const App: React.FC = () => {
             transition={{ duration: 0.5 }}
             className="absolute inset-0 z-30"
           >
-            <HomeView onEnterHub={handleEnterHub} />
+            <HomeView onEnterHub={handleEnterHub} onEnterJuniorHub={handleEnterJuniorHub} />
+          </motion.div>
+        )}
+
+        {view === 'JUNIOR_HUB' && (
+          <motion.div
+            key="junior-hub"
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -100 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="absolute inset-0 z-20 overflow-y-auto no-scrollbar"
+          >
+            <JuniorHubView onGoHome={handleGoHome} />
           </motion.div>
         )}
 
