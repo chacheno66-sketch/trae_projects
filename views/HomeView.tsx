@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ChevronDown, ChevronUp, Sparkles, Rocket } from 'lucide-react';
+import { ArrowRight, ChevronDown, ChevronUp, Sparkles, Rocket, Camera } from 'lucide-react';
 
 interface HomeViewProps {
   onEnterHub: () => void;
@@ -104,6 +104,37 @@ const HomeView: React.FC<HomeViewProps> = ({ onEnterHub, onEnterJuniorHub }) => 
             </div>
           </div>
         </motion.button>
+
+        {/* Live Photo Streaming Section */}
+        <motion.a
+          href="https://live.photoplus.cn/live/73768487"
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="h-24 rounded-2xl relative overflow-hidden group shadow-lg shadow-purple-500/5 border border-purple-500/20 text-left w-full flex-none"
+        >
+          {/* Background Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-indigo-600 transition-transform duration-500 group-hover:scale-105" />
+          
+          <div className="absolute inset-0 px-6 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-white/20 backdrop-blur-md rounded-xl">
+                <Camera className="text-white w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white leading-tight">现场图片直播</h3>
+                <p className="text-white/80 text-xs mt-1">实时查看活动精彩瞬间</p>
+              </div>
+            </div>
+            <div className="bg-white/20 backdrop-blur-md rounded-full p-1.5">
+              <ArrowRight className="w-5 h-5 text-white" />
+            </div>
+          </div>
+        </motion.a>
 
       </main>
 
