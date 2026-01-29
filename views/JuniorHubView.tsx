@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Tag, ChevronDown, ChevronUp, Filter, X, MapPin, Home } from 'lucide-react';
+import { Search, Tag, Filter, X, MapPin, Home } from 'lucide-react';
 import { Company, Zone } from '../types';
 import { parseCSV } from '../src/utils/csvParser';
 
@@ -29,8 +29,8 @@ const JuniorHubView: React.FC<JuniorHubViewProps> = ({ onGoHome }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   // UI State
-  const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
+  const [isMapModalOpen, setIsMapModalOpen] = useState(false);
 
   // Load CSV
   useEffect(() => {
@@ -124,11 +124,6 @@ const JuniorHubView: React.FC<JuniorHubViewProps> = ({ onGoHome }) => {
     setShowAll(false);
   };
 
-  const toggleExpand = (id: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setExpandedId(prev => prev === id ? null : id);
-  };
-
   return (
     <div className="min-h-screen bg-junior/5 pb-20">
       
@@ -194,14 +189,54 @@ const JuniorHubView: React.FC<JuniorHubViewProps> = ({ onGoHome }) => {
         </div>
 
         {/* Map / Image Section */}
-        <div className="mb-6 rounded-2xl overflow-hidden shadow-md border border-slate-100">
-          {/* TODO: Replace src with your local image import, e.g. src={mapImage} */}
+        <div className="mb-6 rounded-2xl overflow-hidden shadow-md border border-slate-100 relative group cursor-pointer" onClick={() => setIsMapModalOpen(true)}>
           <img 
-            src="https://placehold.co/800x300/e2e8f0/64748b?text=Map+Image+Area" 
+            src="/Junior hubview map.png" 
             alt="Venue Map" 
-            className="w-full h-auto object-cover block"
+            className="w-full h-32 object-cover object-center group-hover:scale-105 transition-transform duration-500"
           />
+          <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+            <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold text-slate-700 shadow-sm flex items-center gap-2">
+              <MapPin className="w-3 h-3 text-junior" />
+              点击查看展位图
+            </div>
+          </div>
         </div>
+
+        {/* Map Modal */}
+        <AnimatePresence>
+          {isMapModalOpen && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsMapModalOpen(false)}
+                className="absolute inset-0 bg-black/90 backdrop-blur-sm"
+              />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl"
+              >
+                <button 
+                  onClick={() => setIsMapModalOpen(false)}
+                  className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors z-10"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+                <div className="w-full h-full overflow-auto p-2 bg-slate-100 flex items-center justify-center">
+                  <img 
+                    src="/Junior hubview map.png" 
+                    alt="Venue Map Full" 
+                    className="w-full h-auto max-h-[85vh] object-contain rounded-lg"
+                  />
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
 
         {/* 4. Category Filter Trigger & Info */}
         <div className="flex items-center justify-between mb-4">
@@ -236,28 +271,24 @@ const JuniorHubView: React.FC<JuniorHubViewProps> = ({ onGoHome }) => {
           ) : (
             <>
               {displayList.map((company) => {
-                const isExpanded = expandedId === company.id;
-                
                 return (
                   <motion.div
                     key={company.id}
                     layout
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className={`bg-white rounded-2xl overflow-hidden border transition-all ${
-                      isExpanded ? 'border-junior/30 shadow-md ring-1 ring-junior/20' : 'border-slate-100 shadow-sm'
-                    }`}
+                    className="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm"
                   >
-                    {/* Card Header (Always Visible) */}
-                    <div className="p-4" onClick={(e) => toggleExpand(company.id, e)}>
-                      <div className="flex gap-4 items-start">
+                    {/* Card Header (Static) */}
+                    <div className="p-4">
+                      <div className="flex gap-4 items-center">
                         {/* Visual Anchor: Big Booth Number */}
                         <div className="flex flex-col items-center justify-center w-16 h-16 bg-junior/10 text-junior rounded-2xl shrink-0 border border-junior/20">
                           <span className="text-[10px] font-bold uppercase tracking-wider opacity-60">展位</span>
                           <span className="text-2xl font-black leading-none">{company.boothNumber}</span>
                         </div>
                         
-                        <div className="flex-1 min-w-0 pt-0.5">
+                        <div className="flex-1 min-w-0">
                           <div className="flex justify-between items-start gap-2 mb-1">
                             <h3 className="font-bold text-lg text-slate-900 leading-tight truncate">{company.name}</h3>
                             <span className="text-[10px] font-bold text-junior bg-junior/10 px-2 py-1 rounded-full whitespace-nowrap shrink-0">
@@ -265,63 +296,13 @@ const JuniorHubView: React.FC<JuniorHubViewProps> = ({ onGoHome }) => {
                             </span>
                           </div>
                           
-                          <div className="flex items-center gap-1 text-xs text-slate-500 mb-2">
+                          <div className="flex items-center gap-1 text-xs text-slate-500">
                             <MapPin className="w-3 h-3" />
                             <span className="truncate">{company.school}</span>
                           </div>
-                          {!isExpanded && (
-                            <p className="text-sm text-slate-500 line-clamp-1">
-                              {company.shortDescription}
-                            </p>
-                          )}
                         </div>
                       </div>
-
-                      {/* Expand Button */}
-                      <div className="flex justify-center mt-2">
-                        <button 
-                          className="p-1 rounded-full hover:bg-slate-50 text-slate-400 transition-colors"
-                        >
-                          {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-                        </button>
-                      </div>
                     </div>
-
-                    {/* Expanded Content */}
-                    <AnimatePresence>
-                      {isExpanded && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          className="bg-slate-50 border-t border-slate-100 px-4 py-4"
-                        >
-                          <h4 className="text-sm font-bold text-slate-900 mb-2">项目介绍</h4>
-                          <div className="space-y-3 text-sm text-slate-600 leading-relaxed">
-                            <div>
-                              <span className="font-bold text-junior">发现问题：</span>
-                              {company.painPoints}
-                            </div>
-                            <div>
-                              <span className="font-bold text-junior">解决方案：</span>
-                              {company.solution}
-                            </div>
-                          </div>
-                          
-                          <div className="mt-4 pt-4 border-t border-slate-200 flex justify-between items-center">
-                            <span className="text-xs text-slate-400">
-                              分组: {company.zone}
-                            </span>
-                            <button 
-                              onClick={(e) => toggleExpand(company.id, e)}
-                              className="text-xs font-bold text-junior px-3 py-1.5 bg-junior/10 rounded-lg hover:bg-junior/20 transition-colors"
-                            >
-                              收起详情
-                            </button>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
                   </motion.div>
                 );
               })}
