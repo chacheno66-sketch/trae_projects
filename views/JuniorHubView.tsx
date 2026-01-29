@@ -32,43 +32,43 @@ const JuniorHubView: React.FC<JuniorHubViewProps> = ({ onGoHome }) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
 
-  // Mock Data Loading (Since no real CSV yet)
+  // Load CSV
   useEffect(() => {
-    // Simulating API/CSV load delay
-    setTimeout(() => {
-      const mockData: Company[] = [
-        {
-          id: 'J01',
-          boothNumber: '01',
-          name: '快乐回收站',
-          school: '实验小学',
-          zone: 'A',
-          tag: '环保创新',
-          shortDescription: '一个可以让垃圾分类更有趣的智能垃圾桶装置。',
-          painPoints: '我们发现很多同学不愿意垃圾分类是因为觉得麻烦。',
-          solution: '当你投入正确的垃圾时，会发出有趣的音效并显示笑脸。',
-          teamName: '快乐回收小队',
-          imageUrl: '',
-          likes: 0
-        },
-        {
-          id: 'J02',
-          boothNumber: '02',
-          name: '防丢橡皮擦',
-          school: '阳光小学',
-          zone: 'B',
-          tag: '文具改良',
-          shortDescription: '再也不用担心橡皮擦找不到了！',
-          painPoints: '橡皮擦经常丢失，造成浪费。',
-          solution: '通过在橡皮擦上安装微型追踪贴片，结合文具盒上的提示灯提醒。',
-          teamName: '细心观察员',
-          imageUrl: '',
-          likes: 0
-        }
-      ];
-      setCompanies(mockData);
-      setLoading(false);
-    }, 500);
+    const loadCompanies = async () => {
+      try {
+        const response = await fetch('/junior_companies.csv');
+        const text = await response.text();
+        const data = parseCSV(text);
+        
+        const mappedCompanies: Company[] = data.map((row: any) => {
+          const boothNum = row['展位号']?.toString() || '';
+          const paddedBooth = boothNum.padStart(2, '0');
+          
+          return {
+            id: `J${paddedBooth}`,
+            name: row['团队名称'],
+            school: row['学校名称'] || '',
+            boothNumber: paddedBooth,
+            zone: 'A' as Zone, // Default zone
+            tag: row['主题'] || '未分类',
+            shortDescription: row['主题'] || '',
+            painPoints: '现场了解更多...',
+            solution: '现场了解更多...',
+            teamName: row['团队名称'] || '',
+            imageUrl: '',
+            likes: 0
+          };
+        }).filter((c: any) => c.id && c.name && c.boothNumber);
+
+        setCompanies(mappedCompanies);
+      } catch (error) {
+        console.error('Failed to load companies:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCompanies();
   }, []);
 
   // Derived State: Unique Categories
@@ -193,7 +193,15 @@ const JuniorHubView: React.FC<JuniorHubViewProps> = ({ onGoHome }) => {
           ))}
         </div>
 
-
+        {/* Map / Image Section */}
+        <div className="mb-6 rounded-2xl overflow-hidden shadow-md border border-slate-100">
+          {/* TODO: Replace src with your local image import, e.g. src={mapImage} */}
+          <img 
+            src="https://placehold.co/800x300/e2e8f0/64748b?text=Map+Image+Area" 
+            alt="Venue Map" 
+            className="w-full h-auto object-cover block"
+          />
+        </div>
 
         {/* 4. Category Filter Trigger & Info */}
         <div className="flex items-center justify-between mb-4">

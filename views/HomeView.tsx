@@ -150,7 +150,7 @@ const HomeView: React.FC<HomeViewProps> = ({ onEnterHub, onEnterJuniorHub }) => 
             onClick={() => setIsAboutExpanded(!isAboutExpanded)}
             className="w-full px-5 py-4 flex items-center justify-between text-slate-800 hover:bg-slate-50 transition-colors"
           >
-            <span className="font-semibold text-sm">关于本次活动</span>
+            <span className="font-semibold text-sm">关于JA中国</span>
             {isAboutExpanded ? (
               <ChevronDown className="w-4 h-4 text-slate-400" />
             ) : (

@@ -189,7 +189,15 @@ const HubView: React.FC<HubViewProps> = ({ onGoHome }) => {
           ))}
         </div>
 
-
+        {/* Map / Image Section */}
+        <div className="mb-6 rounded-2xl overflow-hidden shadow-md border border-slate-100">
+          {/* TODO: Replace src with your local image import, e.g. src={mapImage} */}
+          <img 
+            src="https://placehold.co/800x300/e2e8f0/64748b?text=Map+Image+Area" 
+            alt="Venue Map" 
+            className="w-full h-auto object-cover block"
+          />
+        </div>
 
         {/* 4. Category Filter Trigger & Info */}
         <div className="flex items-center justify-between mb-4">
